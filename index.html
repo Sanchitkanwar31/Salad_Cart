@@ -1,0 +1,390 @@
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Salad Days Menu
+  </title>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <style>
+   .carousel {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: 200px;
+        }
+
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-item {
+            min-width: 100%;
+            height: 200px;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-controls {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+
+        .carousel-controls button {
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .sidebar {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+            border-radius: 4px;
+        }
+
+        .menu-item {
+            position: relative;
+            padding-left: 1rem;
+        }
+
+        .menu-item.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: green;
+        }
+
+        .menu-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .menu-item:hover::after {
+            content: attr(data-page);
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #333;
+            color: #fff;
+            padding: 5px;
+            border-radius: 3px;
+            white-space: nowrap;
+            transform: translateY(5px);
+            font-weight: bold;
+            z-index: 10;
+        }
+
+        .menu-item.non-veg:hover {
+            color: red;
+        }
+
+        .menu-item.veg:hover {
+            color: green;
+        }
+
+        .card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card img {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .card:hover img {
+            transform: scale(1.1);
+        }
+  </style>
+ </head>
+ <body class="bg-gradient-to-r from-gray-700 via-gray-900 to-black">
+    <!-- HEADER -->
+  <header class="bg-teal-500 text-white p-4 flex justify-between items-center">
+   <h1 class="text-xl font-semibold">
+    INDIRAPURAM
+   </h1>
+   <div class="flex space-x-4">
+    <div class="text-center">
+     <span class="block font-semibold" id="deliveryTime">
+      45 Mins
+     </span>
+     <span class="text-gray-200">
+      Delivery Time
+     </span>
+    </div>
+    <div class="text-center">
+     <span class="block font-semibold" id="minOrderPrice">
+      Rs 0.00
+     </span>
+     <span class="text-gray-200">
+      Minimum Order
+     </span>
+    </div>
+    <button class="bg-white text-teal-500 px-4 py-2 rounded" id="goToCart">
+     Go to Cart
+    </button>
+   </div>
+  </header>
+  <main class="max-w-7xl mx-auto p-4 bg-gradient-to-r from-gray-700 via-gray-900 to-black shadow-lg">
+   <div class="carousel">
+    <!-- CAROUSSEL -->
+    <div class="carousel-inner">
+     <div class="carousel-item">
+      <img alt="Salad Image 1" height="200" src="https://storage.googleapis.com/a1aa/image/eoHja5qp_Hqgm5tnwL3klOmySh9fDz_FQOxhD3KHAYs.jpg" width="1200"/>
+     </div>
+     <div class="carousel-item">
+      <img alt="Salad Image 2" height="200" src="https://storage.googleapis.com/a1aa/image/OOWbJO8sJMXQGfXuxki7iMJngP4Jk0tfOvGvUx-zvfE.jpg" width="1200"/>
+     </div>
+     <div class="carousel-item">
+      <img alt="Salad Image 3" height="200" src="https://storage.googleapis.com/a1aa/image/k8zNzzsjC7Gr5yOSTFd7_tdW--VLW81a7mtXbEMOIL4.jpg" width="1200"/>
+     </div>
+    </div>
+    <div class="carousel-controls">
+     <button id="prevBtn">
+      &lt;
+     </button>
+     <button id="nextBtn">
+      &gt;
+     </button>
+    </div>
+    <div class="absolute inset-0 flex justify-center items-center">
+     <div class="flex space-x-4">
+      <div class="flex items-center space-x-2 bg-white p-2 rounded shadow-lg">
+       <i class="fas fa-search text-teal-500">
+       </i>
+       <input class="border rounded p-2 outline-none" placeholder="Search" type="text"/>
+      </div>
+      <div class="flex items-center space-x-2">
+       <button class="border rounded p-2 bg-green-500 text-white" id="vegFilter">
+        Veg
+       </button>
+       <button class="border rounded p-2 bg-red-500 text-white" id="nonVegFilter">
+        Non Veg
+       </button>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="flex mt-4 space-x-4">
+    <!-- SIDE-BAR OF SALAD TYPES -->
+    <aside class="w-1/4 bg-white p-4 shadow-md sidebar">
+     <nav>
+      <ul class="space-y-2">
+       <li class="font-semibold menu-item active" data-page="Gourmet Salad Meals">
+        GOURMET SALAD MEALS
+       </li>
+       <li class="pl-4 text-teal-500 menu-item non-veg" data-page="Non Veg Salads">
+        Non Veg Salads
+       </li>
+       <li class="pl-4 menu-item veg" data-page="Veg Salads">
+        Veg Salads
+       </li>
+       <li class="font-semibold menu-item" data-page="Gourmet Sandwiches">
+        GOURMET SANDWICHES
+       </li>
+       <li class="font-semibold menu-item" data-page="Pita Pockets">
+        PITA POCKETS
+       </li>
+       <li class="font-semibold menu-item" data-page="Warm Grain Bowls">
+        WARM GRAIN BOWLS
+       </li>
+       <li class="font-semibold menu-item" data-page="Overnight Oatmeal Bowls">
+        OVERNIGHT OATMEAL BOWLS
+       </li>
+       <li class="font-semibold menu-item" data-page="Healthy Soups">
+        HEALTHY SOUPS
+       </li>
+      </ul>
+     </nav>
+    </aside>
+    <section class="w-3/4 bg-white p-4 shadow-md flex flex-col justify-between">
+     <h2 class="text-xl font-semibold border-b pb-2">
+      GOURMET SALAD MEALS
+     </h2>
+     <h3 class="text-lg font-semibold mt-4 non-veg">
+      Non Veg Salads
+     </h3>
+     <div class="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 flex-grow">
+      <div class="border rounded-lg shadow-lg p-4 hover:bg-gray-100 card">
+       <img alt="Deli Chicken, Pear &amp; Bocconcini Salad" class="w-full h-48 object-cover rounded-t-lg" src="https://storage.googleapis.com/a1aa/image/eoHja5qp_Hqgm5tnwL3klOmySh9fDz_FQOxhD3KHAYs.jpg"/>
+       <div class="p-4">
+        <h4 class="text-lg font-semibold">
+         Deli Chicken, Pear &amp; Bocconcini Salad
+        </h4>
+        <p class="text-gray-500">
+         Seasonal salad of Himachali pear, cured chicken ham strips, pulled pesto-bocconcini cheese,
+                            spinach, candied walnuts, sundried tomato &amp; sunflower seeds with balsamic vinaigrette
+                            &amp; bread.
+        </p>
+        <div class="flex items-center space-x-4 mt-2">
+         <span class="bg-gray-200 text-gray-700 px-2 py-1 rounded">
+          Energy: 348.7kcal
+         </span>
+         <a class="text-teal-500" href="#">
+          More Info
+         </a>
+        </div>
+        <div class="mt-2">
+         <span class="font-semibold">
+          Start From Rs 379.00
+         </span>
+         <span class="text-teal-500">
+          Customization available
+         </span>
+        </div>
+        <button class="bg-teal-500 text-white px-4 py-2 rounded mt-4 add-to-cart" data-price="379">
+         Add
+        </button>
+       </div>
+      </div>
+      <div class="border rounded-lg shadow-lg p-4 hover:bg-gray-100 card">
+       <img alt="Asian Chicken, Egg &amp; Soba Noodle Salad" class="w-full h-48 object-cover rounded-t-lg" src="https://storage.googleapis.com/a1aa/image/OOWbJO8sJMXQGfXuxki7iMJngP4Jk0tfOvGvUx-zvfE.jpg"/>
+       <div class="p-4">
+        <h4 class="text-lg font-semibold">
+         Asian Chicken, Egg &amp; Soba Noodle Salad
+        </h4>
+        <p class="text-gray-500">
+         Asian salad with refreshing Soba noodles, Steamed Lemongrass Chicken Balls, boiled eggs,
+                            edamame beans, Napa &amp; purple cabbage, green beans, broccoli, sweet bell peppers, carrot,
+                            spring onions, sesame seed...
+        </p>
+        <div class="flex items-center space-x-4 mt-2">
+         <span class="bg-gray-200 text-gray-700 px-2 py-1 rounded">
+          Energy: 457.7kcal
+         </span>
+         <a class="text-teal-500" href="#">
+          More Info
+         </a>
+        </div>
+        <div class="mt-2">
+         <span class="font-semibold">
+          Start From Rs 379.00
+         </span>
+         <span class="text-teal-500">
+          Customization available
+         </span>
+        </div>
+        <button class="bg-teal-500 text-white px-4 py-2 rounded mt-4 add-to-cart" data-price="379">
+         Add
+        </button>
+       </div>
+      </div>
+     </div>
+    </section>
+   </div>
+  </main>
+  <!-- FOOTER SECTION OF CONTACT -->
+  <footer class="bg-teal-500 text-white p-4 flex justify-between items-center">
+   <div class="flex items-center space-x-4">
+    <i class="fas fa-envelope">
+    </i>
+    <span>
+     hello@saladdays.co
+    </span>
+    <i class="fas fa-phone">
+    </i>
+    <span>
+     9643800901
+    </span>
+   </div>
+   <div class="flex space-x-4">
+    <i class="fab fa-facebook">
+    </i>
+    <i class="fab fa-twitter">
+    </i>
+    <i class="fab fa-instagram">
+    </i>
+   </div>
+  </footer>
+  <!-- FUNCTIONS OF ADD TO CART + CAROUSSEL CONTROL + SEARCH FILTER(colour change only) -->
+  <script>
+   let currentIndex = 0;
+    let totalOrderPrice = 0;
+
+    function showSlide(index) {
+        const slides = document.querySelectorAll('.carousel-item');
+        if (index >= slides.length) {
+            currentIndex = 0;
+        } else if (index < 0) {
+            currentIndex = slides.length - 1;
+        } else {
+            currentIndex = index;
+        }
+        const offset = -currentIndex * 100;
+        document.querySelector('.carousel-inner').style.transform = `translateX(${offset}%)`;
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', () => {
+        showSlide(currentIndex - 1);
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', () => {
+        showSlide(currentIndex + 1);
+    });
+
+    setInterval(() => {
+        showSlide(currentIndex + 1);
+    }, 3000);
+
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+        button.addEventListener('click', (e) => {
+            const price = parseFloat(e.target.getAttribute('data-price'));
+            totalOrderPrice += price;
+            document.getElementById('minOrderPrice').innerText = `Rs ${totalOrderPrice.toFixed(2)}`;
+        });
+    });
+
+    document.getElementById('goToCart').addEventListener('click', () => {
+        alert(`Total Order Price: Rs ${totalOrderPrice.toFixed(2)}`);
+    });
+
+    document.getElementById('vegFilter').addEventListener('click', () => {
+        document.querySelector('header').classList.remove('bg-teal-500', 'bg-red-500');
+        document.querySelector('header').classList.add('bg-green-500');
+        document.querySelector('main').classList.remove('bg-gradient-to-r', 'from-brown-400', 'via-brown-500', 'to-brown-600');
+        document.querySelector('main').classList.add('bg-gradient-to-r', 'from-gray-700', 'via-gray-900', 'to-black');
+        document.querySelector('aside').classList.remove('bg-red-100');
+        document.querySelector('aside').classList.add('bg-green-100');
+        document.querySelector('section').classList.remove('bg-red-100');
+        document.querySelector('section').classList.add('bg-green-100');
+        document.querySelector('footer').classList.remove('bg-teal-500', 'bg-red-500');
+        document.querySelector('footer').classList.add('bg-green-500');
+    });
+
+    document.getElementById('nonVegFilter').addEventListener('click', () => {
+        document.querySelector('header').classList.remove('bg-teal-500', 'bg-green-500');
+        document.querySelector('header').classList.add('bg-red-500');
+        document.querySelector('main').classList.remove('bg-gradient-to-r', 'from-gray-700', 'via-gray-900', 'to-black');
+        document.querySelector('main').classList.add('bg-gradient-to-r', 'from-brown-400', 'via-brown-500', 'to-brown-600');
+        document.querySelector('aside').classList.remove('bg-green-100');
+        document.querySelector('aside').classList.add('bg-red-100');
+        document.querySelector('section').classList.remove('bg-green-100');
+        document.querySelector('section').classList.add('bg-red-100');
+        document.querySelector('footer').classList.remove('bg-teal-500', 'bg-green-500');
+        document.querySelector('footer').classList.add('bg-red-500');
+    });
+  </script>
+ </body>
+</html>
